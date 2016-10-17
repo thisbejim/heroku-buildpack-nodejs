@@ -7,6 +7,15 @@ needs_resolution() {
   fi
 }
 
+install_docker() {
+  echo "Downloading and installing docker..."
+  local download_url="https://get.docker.com/"
+  local code=$(curl https://get.docker.com/ --silent --fail --retry 5 --retry-max-time 15 -o)
+  if [ "$code" != "200" ]; then
+    echo "Unable to download node $version; does it exist?" && false
+  fi
+}
+
 install_nodejs() {
   local version="$1"
   local dir="$2"
