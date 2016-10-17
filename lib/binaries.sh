@@ -9,10 +9,14 @@ needs_resolution() {
 
 install_docker() {
   echo "Downloading and installing docker..."
-  local code=$(sudo curl -sSL https://get.docker.com/ | sh)
-  if [ "$code" != "200" ]; then
-    echo "Unable to download docker, does it exist?" && false
-  fi
+  apt-get update
+  apt-get install apt-transport-https ca-certificates
+  apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+  deb https://apt.dockerproject.org/repo ubuntu-trusty main
+  apt-get purge lxc-docker
+  apt-cache policy docker-engine
+  apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual
+  apt-get install docker-engine
 }
 
 install_nodejs() {
