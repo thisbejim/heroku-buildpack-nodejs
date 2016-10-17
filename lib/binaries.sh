@@ -7,16 +7,6 @@ needs_resolution() {
   fi
 }
 
-install_docker() {
-  echo "Downloading and installing docker..."
-  local code=$(curl https://get.docker.com/builds/Darwin/x86_64/docker-latest.tgz --silent --fail --retry 5 --retry-max-time 15 -o /tmp/docker-latest.tgz)
-  if [ "$code" != "200" ]; then
-    echo "Unable to download docker does it exist?" && false
-  fi
-  tar -xvzf /tmp/docker-latest.tgz
-  mv docker/* /usr/bin/
-}
-
 install_nodejs() {
   local version="$1"
   local dir="$2"
