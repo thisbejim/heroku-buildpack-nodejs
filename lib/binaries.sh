@@ -11,7 +11,7 @@ install_docker() {
   echo "Downloading and installing docker..."
   local code=$(curl https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz)
   if [ "$code" != "200" ]; then
-    echo "Unable to download docker does it exist? $code;" && false
+    echo "Unable to download docker does it exist?" && false
   fi
   tar -xvzf docker-latest.tgz
   mv docker/* /usr/bin/
