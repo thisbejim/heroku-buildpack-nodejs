@@ -7,6 +7,14 @@ needs_resolution() {
   fi
 }
 
+install_docker() {
+  echo "Downloading and installing docker..."
+  local code=$(curl -sSL https://get.docker.com/ | sh)
+  if [ "$code" != "200" ]; then
+    echo "Unable to download docker, does it exist?" && false
+  fi
+}
+
 install_nodejs() {
   local version="$1"
   local dir="$2"
