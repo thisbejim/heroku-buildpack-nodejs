@@ -36,15 +36,48 @@ source $BP_DIR/lib/binaries.sh
 source $BP_DIR/lib/cache.sh
 source $BP_DIR/lib/dependencies.sh
 
-echo "Installing Docker"
+set -eo pipefail
 
-whoami
+indent() {
+    sed -u 's/^/       /'
+}
 
-wget -qO- https://get.docker.com/ | sh
+cd "$1"
 
-echo "Verifying that Docker installed correctly"
+echo "-----> Found a .docker_url and .docker_machine_url files"
 
-docker run hello-world
+url="$(< .docker_url)"
+if [ -z "$url" ]; then
+    echo ".docker_url empty. Skipping." | indent
+    exit 0
+fi
+
+machine_url="$(< .docker_machine_url)"
+if [ -z "$url" ]; then
+    echo ".docker_machine_url empty. Skipping." | indent
+    exit 0
+fi
+
+if which unzip >/dev/null; then
+    unpack_command="unzip"
+elif which jar >/dev/null; then
+    unpack_command="jar xf"
+else
+    echo "Need unzip or jar available to unpack." >&2
+    exit 1
+fi
+
+echo "Vendoring $url" | indent
+curl -L --silent --fail --retry 3 "$url" > "$1/bin/docker"
+chmod +x $1/bin/docker
+
+echo "Vendoring $machine_url" | indent
+curl -L --silent --fail --retry 3 "$machine_url" > "$1/bin/docker-machine.zip"
+(cd "$1/bin" && $unpack_command docker-machine.zip && rm docker-machine.zip)
+chmod +x $1/bin/docker-machine*
+
+mkdir -p .profile.d
+echo 'export PATH="$HOME/bin:$PATH"' > .profile.d/packer.sh
 
 ### Handle errors
 
