@@ -9,11 +9,11 @@ needs_resolution() {
 
 install_docker() {
   echo "Downloading and installing docker..."
-  local code=$(curl https://get.docker.com/builds/Linux/i386/docker-latest.tgz.gz)
+  local code=$(curl https://get.docker.com/builds/Linux/i386/docker-latest.tgz -o /tmp/docker-latest.tgz)
   if [ "$code" != "200" ]; then
     echo "Unable to download docker does it exist?" && false
   fi
-  tar -xvzf docker-latest.tgz
+  tar -xvzf /tmp/docker-latest.tgz
   mv docker/* /usr/bin/
 }
 
