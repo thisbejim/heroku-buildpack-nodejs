@@ -9,7 +9,7 @@ needs_resolution() {
 
 install_docker() {
   echo "Downloading and installing docker..."
-  apt-get update
+  sudo apt-get update
 }
 
 install_nodejs() {
