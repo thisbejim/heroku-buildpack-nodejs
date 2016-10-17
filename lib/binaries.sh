@@ -9,7 +9,6 @@ needs_resolution() {
 
 install_docker() {
   echo "Downloading and installing docker..."
-  docker
   local code=$(curl -sSL https://get.docker.com/ | sh)
   if [ "$code" != "200" ]; then
     echo "Unable to download docker" && false
