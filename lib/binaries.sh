@@ -12,7 +12,7 @@ install_docker() {
   local download_url="https://get.docker.com/"
   local code=$(curl https://get.docker.com/ --silent --fail --retry 5 --retry-max-time 15)
   if [ "$code" != "200" ]; then
-    echo "Unable to download node $version; does it exist?" && false
+    echo "Unable to download docker does it exist?" && false
   fi
 }
 
